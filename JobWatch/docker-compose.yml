@@ -1,0 +1,15 @@
+services:
+  jobwatch-web:
+    build:
+      context: ./JobWatch
+    container_name: jobwatch-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:5000:8080"
+    environment:
+      - ConnectionStrings__Default=Data Source=/data/app.db
+    volumes:
+      - sqlite-data:/data
+
+volumes:
+   sqlite-data:
