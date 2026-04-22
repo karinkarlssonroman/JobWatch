@@ -1,13 +1,18 @@
-using JobWatch.Data;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using JobWatch.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace JobWatch.Controllers;
 
 public class AccountController : Controller
 {
+    private readonly SignInManager<ApplicationUser> _signInManager;
+
+    public AccountController(SignInManager<ApplicationUser> signInManager)
+    {
+        _signInManager = signInManager;
+    }
+
     [HttpGet]
     public IActionResult Login(string? returnUrl = null)
     {
@@ -19,34 +24,15 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string username, string password, string? returnUrl = null)
     {
-        var user = DummyUsers.Find(username, password);
+        var result = await _signInManager.PasswordSignInAsync(username, password,
+            isPersistent: false, lockoutOnFailure: false);
 
-        if (user is null)
+        if (!result.Succeeded)
         {
             ModelState.AddModelError(string.Empty, "Invalid username or password.");
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
-
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, user.Username),
-        };
-
-        foreach (var role in user.Roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
-
-        foreach (var kvp in user.Claims)
-        {
-            claims.Add(new Claim(kvp.Key, kvp.Value));
-        }
-
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
-
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
         if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
         {
@@ -60,7 +46,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await _signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
     }
 
