@@ -33,6 +33,11 @@ public class AccountController : Controller
             new Claim(ClaimTypes.Name, user.Username),
         };
 
+        foreach (var role in user.Roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
 
