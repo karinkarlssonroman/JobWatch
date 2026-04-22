@@ -38,6 +38,11 @@ public class AccountController : Controller
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
+        foreach (var kvp in user.Claims)
+        {
+            claims.Add(new Claim(kvp.Key, kvp.Value));
+        }
+
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var principal = new ClaimsPrincipal(identity);
 
