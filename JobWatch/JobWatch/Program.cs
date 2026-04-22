@@ -21,7 +21,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireEngineering", policy =>
+        policy.RequireClaim("Department", "Engineering"));
+});
 
 var app = builder.Build();
 

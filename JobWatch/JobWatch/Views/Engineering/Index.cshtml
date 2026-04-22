@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Engineering";
+}
+
+<h2>Engineering</h2>
+<p>
+    This page is visible because the signed-in identity carries the claim
+    <strong>Department = Engineering</strong>.
+</p>
+<p>
+    Access is controlled by the <code>RequireEngineering</code> policy.
+</p>
+<a asp-controller="WhoAmI" asp-action="Index" class="btn btn-secondary">Back to Who Am I</a>
