@@ -26,6 +26,10 @@ public static class IdentitySeeder
             new Claim("Department", "Engineering"));
         await SeedUserAsync(userManager, "candidate", "candidate", "Candidate",
             new Claim("Department", "Sales"));
+        await SeedUserAsync(userManager, "engineeringmanager", "engineeringmanager", "Admin",  
+            new Claim("Department", "Engineering"));
+        await SeedUserAsync(userManager, "salesmanager", "salesmanager", "Admin",  
+            new Claim("Department", "Sales"));
     }
 
     private static async Task SeedUserAsync(

@@ -21,14 +21,31 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Jobs" asp-action="Index">All Jobs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Jobs" asp-action="Index">Jobs</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Engineering" asp-action="Index">Engineering</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Sales" asp-action="Index">Sales</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="nav-link text-dark btn btn-link">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -42,8 +59,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - JobWatch - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            | <a asp-area="" asp-controller="WhoAmI" asp-action="Index">Who Am I</a>
+            &copy; 2026 - JobWatch - <a asp-area="" asp-controller="WhoAmI" asp-action="Index">Who Am I</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
