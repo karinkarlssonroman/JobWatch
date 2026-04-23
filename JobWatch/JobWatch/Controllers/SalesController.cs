@@ -5,40 +5,38 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobWatch.Controllers;
 
-//[Authorize(Policy = "RequireEngineering")]
-public class EngineeringController : Controller
+public class SalesController : Controller
 {
     private readonly JobService _jobService;
 
-    public EngineeringController(JobService jobService)
+    public SalesController(JobService jobService)
     {
         _jobService = jobService;
     }
 
     public async Task<IActionResult> Index()
     {
-        var jobs = await _jobService.GetAllJobsAsync(JobType.Enginnering);
-        
+        var jobs = await _jobService.GetAllJobsAsync(JobType.Sales);
         return View(jobs);
     }
 
-    [Authorize(Roles = "Admin", Policy = "RequireEngineering")]
-    public IActionResult AddEngineering()
+    [Authorize(Roles = "Admin", Policy = "RequireSales")]
+    public IActionResult AddSales()
     {
         return View();
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin", Policy = "RequireEngineering")]
-    public async Task<IActionResult> AddEngineering(Job job)
+    [Authorize(Roles = "Admin", Policy = "RequireSales")]
+    public async Task<IActionResult> AddSales(Job job)
     {
         if (!ModelState.IsValid)
         {
             return View(job);
         }
 
-        job.Type = JobType.Enginnering;
+        job.Type = JobType.Sales;
         await _jobService.CreateJobAsync(job);
         return RedirectToAction(nameof(Index));
     }

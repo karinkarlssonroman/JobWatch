@@ -11,4 +11,6 @@ public class Job
 
     [Required]
     public string Description { get; set; } = string.Empty;
+
+    public JobType Type { get; set; } = JobType.None;
 }

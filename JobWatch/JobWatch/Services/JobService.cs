@@ -12,9 +12,12 @@ public class JobService
         _repository = repository;
     }
 
-    public async Task<List<Job>> GetAllJobsAsync()
+    public async Task<List<Job>> GetAllJobsAsync(JobType type = JobType.None)
     {
-        return await _repository.GetAllAsync();
+        if (type == JobType.None)
+            return await _repository.GetAllAsync();
+
+        return await _repository.GetByTypeAsync(type);
     }
 
     public async Task<Job?> GetJobByIdAsync(int id)

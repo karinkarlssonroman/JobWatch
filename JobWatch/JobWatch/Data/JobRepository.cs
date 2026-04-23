@@ -17,6 +17,11 @@ public class JobRepository
         return await _context.Jobs.ToListAsync();
     }
 
+    public async Task<List<Job>> GetByTypeAsync(JobType type)
+    {
+        return await _context.Jobs.Where(j => j.Type == type).ToListAsync();
+    }
+
     public async Task<Job?> GetByIdAsync(int id)
     {
         return await _context.Jobs.FindAsync(id);
