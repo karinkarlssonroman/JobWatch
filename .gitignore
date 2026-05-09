@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# SQLite runtime files (keep .db, ignore lockfiles)
+*.db-shm
+*.db-wal
+
+# Bicep compile output
+Infrastructure/main.json
+

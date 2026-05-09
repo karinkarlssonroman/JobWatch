@@ -1,0 +1,11 @@
+using './main.bicep'
+
+param resourceGroupName = 'JobWatchRG'
+param location = 'swedencentral'
+param storageAccountName = 'jobwatchstorage'
+param fileShareName = 'jobwatch'
+param containerAppEnvName = 'jobwatch-env'
+param containerAppName = 'jobwatch'
+param envStorageName = 'jobwatchfiles'
+param containerImage = 'kakan35783/jobwatch:v1'
+param mountPath = '/mounts/jobwatch'
