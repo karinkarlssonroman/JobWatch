@@ -60,6 +60,10 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - JobWatch - <a asp-area="" asp-controller="WhoAmI" asp-action="Index">Who Am I</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span class="ms-3">Du är inloggad som <strong>@User.Identity.Name</strong></span>
+            }
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
