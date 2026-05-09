@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h2>Create User</h2>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success">@success</div>
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <form asp-action="CreateUser" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="department" class="form-label">Department</label>
+                <select id="department" name="department" class="form-select" required>
+                    <option value="">-- Select Department --</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Sales">Sales</option>
+                </select>
+            </div>
+            <p class="text-muted">Created users will have the <strong>Admin</strong> role and the selected department claim.</p>
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

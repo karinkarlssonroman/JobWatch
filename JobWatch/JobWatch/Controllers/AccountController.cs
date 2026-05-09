@@ -42,16 +42,22 @@ public class AccountController : Controller
         }
 
         var user = await _userManager.FindByNameAsync(username);
-        if (user is not null && await _userManager.IsInRoleAsync(user, "Admin"))
+        if (user is not null)
         {
-            var claims = await _userManager.GetClaimsAsync(user);
-            var department = claims.FirstOrDefault(c => c.Type == "Department")?.Value;
+            if (await _userManager.IsInRoleAsync(user, "SystemAdministrator"))
+                return RedirectToAction("CreateUser", "SystemAdmin");
 
-            if (department == "Engineering")
-                return RedirectToAction("Index", "Engineering");
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                var claims = await _userManager.GetClaimsAsync(user);
+                var department = claims.FirstOrDefault(c => c.Type == "Department")?.Value;
 
-            if (department == "Sales")
-                return RedirectToAction("Index", "Sales");
+                if (department == "Engineering")
+                    return RedirectToAction("Index", "Engineering");
+
+                if (department == "Sales")
+                    return RedirectToAction("Index", "Sales");
+            }
         }
 
         return RedirectToAction("Index", "WhoAmI");

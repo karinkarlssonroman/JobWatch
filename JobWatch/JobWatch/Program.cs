@@ -39,6 +39,8 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("Department", "Engineering"));
     options.AddPolicy("RequireSales", policy =>
         policy.RequireClaim("Department", "Sales"));
+    options.AddPolicy("RequireSystemAdministrator", policy =>
+        policy.RequireClaim("SystemAdministration", "true"));
 });
 
 var app = builder.Build();
