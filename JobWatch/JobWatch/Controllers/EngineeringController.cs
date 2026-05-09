@@ -42,4 +42,27 @@ public class EngineeringController : Controller
         await _jobService.CreateJobAsync(job);
         return RedirectToAction(nameof(Index));
     }
+
+    [Authorize(Roles = "Admin", Policy = "RequireEngineering")]
+    public async Task<IActionResult> EditEngineering(int id)
+    {
+        var job = await _jobService.GetJobByIdAsync(id);
+        if (job is null) return NotFound();
+        return View(job);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin", Policy = "RequireEngineering")]
+    public async Task<IActionResult> EditEngineering(Job job)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(job);
+        }
+
+        job.Type = JobType.Enginnering;
+        await _jobService.UpdateJobAsync(job);
+        return RedirectToAction(nameof(Index));
+    }
 }

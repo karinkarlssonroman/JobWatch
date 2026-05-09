@@ -40,4 +40,27 @@ public class SalesController : Controller
         await _jobService.CreateJobAsync(job);
         return RedirectToAction(nameof(Index));
     }
+
+    [Authorize(Roles = "Admin", Policy = "RequireSales")]
+    public async Task<IActionResult> EditSales(int id)
+    {
+        var job = await _jobService.GetJobByIdAsync(id);
+        if (job is null) return NotFound();
+        return View(job);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin", Policy = "RequireSales")]
+    public async Task<IActionResult> EditSales(Job job)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(job);
+        }
+
+        job.Type = JobType.Sales;
+        await _jobService.UpdateJobAsync(job);
+        return RedirectToAction(nameof(Index));
+    }
 }

@@ -21,6 +21,10 @@ else
             <tr>
                 <th>Name</th>
                 <th>Description</th>
+                @if (User.IsInRole("Admin") && User.HasClaim("Department", "Engineering"))
+                {
+                    <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -29,6 +33,12 @@ else
                 <tr>
                     <td>@job.Name</td>
                     <td>@job.Description</td>
+                    @if (User.IsInRole("Admin") && User.HasClaim("Department", "Engineering"))
+                    {
+                        <td>
+                            <a asp-controller="Engineering" asp-action="EditEngineering" asp-route-id="@job.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

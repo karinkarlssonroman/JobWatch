@@ -29,4 +29,9 @@ public class JobService
     {
         await _repository.AddAsync(job);
     }
+
+    public async Task UpdateJobAsync(Job job)
+    {
+        await _repository.UpdateAsync(job);
+    }
 }
