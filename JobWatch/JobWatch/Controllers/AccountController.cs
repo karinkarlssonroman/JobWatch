@@ -60,7 +60,7 @@ public class AccountController : Controller
             }
         }
 
-        return RedirectToAction("Index", "WhoAmI");
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpPost]
