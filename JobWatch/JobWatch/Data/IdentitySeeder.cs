@@ -1,6 +1,7 @@
 using JobWatch.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
 
 namespace JobWatch.Data;
 
@@ -10,6 +11,14 @@ public static class IdentitySeeder
     {
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var config = services.GetRequiredService<IConfiguration>();
+
+        var sysAdminPassword = config["AdminSeed:Password"];
+
+        if (string.IsNullOrWhiteSpace(sysAdminPassword))
+        {
+            throw new Exception("AdminSeed:Password saknas.");
+        }
 
         // Seed roles
         string[] roles = ["Admin", "Candidate", "SystemAdministrator"];
@@ -21,15 +30,22 @@ public static class IdentitySeeder
             }
         }
 
-        // Seed users
-        await SeedUserAsync(userManager, "candidate", "candidate", "Candidate",
-            new Claim("Department", "Sales"));
-        await SeedUserAsync(userManager, "engineeringmanager", "engineeringmanager", "Admin",  
-            new Claim("Department", "Engineering"));
-        await SeedUserAsync(userManager, "salesmanager", "salesmanager", "Admin",  
-            new Claim("Department", "Sales"));
-        await SeedUserAsync(userManager, "sysadmin", "sysadmin", "SystemAdministrator",
-            new Claim("SystemAdministration", "true"));
+        // Seed admin
+        await SeedUserAsync(userManager, "sysadmin", sysAdminPassword, "SystemAdministrator", new Claim("SystemAdministration", "true"));
+
+        var env = services.GetRequiredService<IWebHostEnvironment>();
+
+        if (env.IsDevelopment())
+        {
+            await SeedUserAsync(userManager, "candidate", "candidate", "Candidate",
+                new Claim("Department", "Sales"));
+            await SeedUserAsync(userManager, "engineeringmanager", "engineeringmanager", "Admin",
+                new Claim("Department", "Engineering"));
+            await SeedUserAsync(userManager, "salesmanager", "salesmanager", "Admin",
+                new Claim("Department", "Sales"));
+            await SeedUserAsync(userManager, "sysadmin", "sysadmin", "SystemAdministrator",
+                new Claim("SystemAdministration", "true"));
+        }       
     }
 
     private static async Task SeedUserAsync(
