@@ -20,6 +20,12 @@ namespace JobWatch.Controllers
             ViewData["BuildSha"] = buildSha;
             ViewData["HostName"] = hostName;
 
+            if (buildSha == "local")
+                _logger.LogWarning("BUILD_SHA environment variable is not set; falling back to {Fallback}", buildSha);
+
+            _logger.LogDebug("Resolved hostName={HostName} buildSha={BuildSha}", hostName, buildSha);
+            _logger.LogInformation("Home page rendered for {HostName} build {BuildSha}", hostName, buildSha);
+
             return View();
         }
 
