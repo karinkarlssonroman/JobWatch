@@ -43,8 +43,6 @@ public static class IdentitySeeder
                 new Claim("Department", "Engineering"));
             await SeedUserAsync(userManager, "salesmanager", "salesmanager", "Admin",
                 new Claim("Department", "Sales"));
-            await SeedUserAsync(userManager, "sysadmin", "sysadmin", "SystemAdministrator",
-                new Claim("SystemAdministration", "true"));
         }       
     }
 
