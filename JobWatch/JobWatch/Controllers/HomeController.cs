@@ -8,6 +8,11 @@ namespace JobWatch.Controllers
     {
         public IActionResult Index()
         {
+            var buildSha = Environment.GetEnvironmentVariable("BUILD_SHA") ?? "local";
+            var hostName = Environment.MachineName;
+            ViewData["BuildSha"] = buildSha;
+            ViewData["HostName"] = hostName;
+
             return View();
         }
 
