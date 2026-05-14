@@ -23,6 +23,8 @@ jobs:
           context: ./JobWatch/JobWatch
           file: ./JobWatch/JobWatch/Dockerfile
           push: true
+          build-args: |
+            BUILD_SHA=${{ github.sha }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/jobwatch:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/jobwatch:${{ github.sha }}
