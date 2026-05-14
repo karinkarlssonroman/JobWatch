@@ -61,6 +61,24 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+app.Use(async (context, next) =>
+{
+    var correlationId = Guid.NewGuid().ToString("N");
+    context.Items["CorrelationId"] = correlationId;
+
+    var logger = context.RequestServices
+        .GetRequiredService<ILoggerFactory>()
+        .CreateLogger("CorrelationIdMiddleware");
+
+    using (logger.BeginScope(new Dictionary<string, object>
+    {
+        ["CorrelationId"] = correlationId
+    }))
+    {
+        await next();
+    }
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
